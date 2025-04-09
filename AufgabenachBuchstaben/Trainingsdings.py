@@ -35,48 +35,6 @@ def show_example(images, labels, index):
     plt.axis("off")
     plt.show()
 
-# Load dataset
-folder = "BigDataSet"  # Adjust this path if needed
-X, Y = load_and_preprocess_images(folder, img_size=28)
-
-# Train/test split with stratification
-X_train, X_test, Y_train, Y_test = train_test_split(
-    X, Y, test_size=0.1, random_state=42, stratify=Y)
-
-# Preview sample
-show_example(X_train, Y_train, 10)
-
-# Model definition
-model = Sequential([
-    Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
-    MaxPooling2D((2, 2)),
-    Conv2D(64, (3, 3), activation='relu'),
-    MaxPooling2D((2, 2)),
-    Dropout(0.25),
-    Flatten(),
-    Dense(128, activation='relu'),
-    Dropout(0.5),
-    Dense(26, activation='softmax')
-])
-
-# Compile
-model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
-
-# Train
-model.fit(X_train, Y_train, epochs=20, validation_data=(X_test, Y_test))
-
-# Evaluate
-test_loss, test_acc = model.evaluate(X_test, Y_test, verbose=2)
-print(f"\nTest Accuracy: {test_acc:.4f}")
-
-# Save model
-model.save("mein_Buchstaben_model.keras")
-print("Model saved as mein_Buchstaben_model.keras")
-
-# Reload model
-model = tf.keras.models.load_model("mein_Buchstaben_model.keras")
 
 # Prediction function
 def load_and_predict_image(folder, model, img_size=28):
@@ -114,6 +72,51 @@ def load_and_predict_image(folder, model, img_size=28):
         plt.title(f"Predicted: {chr(predicted_label + ord('A'))}")
         plt.axis("off")
         plt.show()
+
+# Load dataset
+folder = "BigDataSet"  # Adjust this path if needed
+X, Y = load_and_preprocess_images(folder, img_size=28)
+
+# Train/test split with stratification
+X_train, X_test, Y_train, Y_test = train_test_split(
+X, Y, test_size=0.1, random_state=42, stratify=Y)
+
+# Preview sample
+show_example(X_train, Y_train, 10)
+
+# Model definition
+model = Sequential([
+    Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    MaxPooling2D((2, 2)),
+    Conv2D(64, (3, 3), activation='relu'),
+    MaxPooling2D((2, 2)),
+    Dropout(0.25),
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dropout(0.5),
+    Dense(26, activation='softmax')
+])
+
+# Compile
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+
+# Train
+model.fit(X_train, Y_train, epochs=20, validation_data=(X_test, Y_test))
+
+# Evaluate
+test_loss, test_acc = model.evaluate(X_test, Y_test, verbose=2)
+print(f"\nTest Accuracy: {test_acc:.4f}")
+
+# Save model
+model.save("mein_Buchstaben_model.keras")
+model.save("mein_Buchstaben_model.h5")
+print("Model saved as mein_Buchstaben_model.keras")
+print("Model saved as mein_Buchstaben_model.h5")
+
+# Reload model
+model = tf.keras.models.load_model("mein_Buchstaben_model.keras")
 
 # Predict 5 random images
 load_and_predict_image("BigDataSet", model)
