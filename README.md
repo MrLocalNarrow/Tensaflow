@@ -43,7 +43,7 @@ Thats the Letter Edited into a Size which the AI Likes to use and also turned in
 Here is the Letter the AI is predicting
 
 
-Some Stupidity FAQ: 
+Small Qna, 
 
 Why did I use Cv2,then Matplotlib? Why not sticking to one of them when opening pictures?
 
